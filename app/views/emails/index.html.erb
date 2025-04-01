@@ -1,0 +1,10 @@
+<h1>Your Emails</h1>
+
+<% @emails.each do |email| %>
+  <div class="email">
+    <h2><%= email.payload.headers.find { |h| h.name == "Subject" }&.value %></h2>
+    <p><strong>From:</strong> <%= email.payload.headers.find { |h| h.name == "From" }&.value %></p>
+    <p><strong>Snippet:</strong> <%= email.snippet %></p>
+    <hr>
+  </div>
+<% end %>
