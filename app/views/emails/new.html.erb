@@ -1,0 +1,62 @@
+<h2 class="text-center my-4 fw-bold text-primary">Send an Email</h2>
+
+<% if flash[:success] || flash[:error] || flash[:notice] %>
+  <div class="alert <%= flash[:success] ? 'alert-success' : flash[:error] ? 'alert-danger' : 'alert-info' %> alert-dismissible fade show text-center" role="alert">
+    <strong><%= flash[:success] ? "Success!" : flash[:error] ? "Error!" : "Notice:" %></strong> <%= flash[:success] || flash[:error] || flash[:notice] %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% end %>
+
+<div class="container d-flex justify-content-center">
+  <div class="card p-4 shadow-lg w-md-75 w-lg-50">
+    <%= form_with url: send_email_path, method: :post, class: "needs-validation" do |f| %>
+      <div class="mb-3">
+        <%= label_tag :to, "Recipient Email", class: "form-label fw-bold" %>
+        <%= text_field_tag :to, "", class: "form-control", required: true, placeholder: "Enter recipient email" %>
+        <% if flash[:error] && flash[:error].include?("to") %>
+          <div class="text-danger">Please enter a recipient email.</div>
+        <% end %>
+      </div>
+
+      <div class="mb-3">
+        <%= label_tag :subject, "Subject", class: "form-label fw-bold" %>
+        <%= text_field_tag :subject, "", class: "form-control", required: true, placeholder: "Enter subject" %>
+        <% if flash[:error] && flash[:error].include?("subject") %>
+          <div class="text-danger">Please enter a subject.</div>
+        <% end %>
+      </div>
+
+      <div class="mb-3">
+        <%= label_tag :body, "Message", class: "form-label fw-bold" %>
+        <%= text_area_tag :body, "", class: "form-control", required: true, placeholder: "Write your message here", rows: 5 %>
+        <% if flash[:error] && flash[:error].include?("body") %>
+          <div class="text-danger">Please enter a message.</div>
+        <% end %>
+      </div>
+
+      <div class="text-center">
+        <%= submit_tag "Send Email", class: "btn btn-primary px-4 fw-bold shadow-sm" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<style>
+  .card {
+    border-radius: 15px;
+  }
+
+  .form-control:focus {
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+  }
+
+  .btn-primary {
+    border-radius: 8px;
+  }
+
+  .text-danger {
+    margin-top: 0.25rem;
+    font-size: 0.875em;
+    color:rgb(252, 2, 27);
+  }
+</style>

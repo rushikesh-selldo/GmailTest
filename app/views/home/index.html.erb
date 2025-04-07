@@ -1,9 +1,47 @@
-<h1>Welcome to GmailTest</h1>
+<h1>Welcome to Gmail</h1>
 
 <% if current_user %>
   <p>Welcome, <%= current_user.name %></p>
-  <%= image_tag current_user.image, width: 50 if current_user.image %>
-  <%= button_to "Logout", logout_path, method: :delete %>
+  
+  <% if current_user.image.present? %>
+    <%= image_tag current_user.image, width: 50, height: 50, class: "user-image", style: "border-radius: 50%;" %>
+  <% end %>
+
+  <br><br>
+
+  <%= button_to "Inbox", emails_path, method: :get,class: "button inbox-btn" %>
+<%= button_to "Send Email", new_email_path, method: :get, class: "button inbox-btn" %>
+
+<%= button_to "Logout", logout_path, method: :delete, class: "button logout-btn" %>
+  
+
 <% else %>
-  <%= link_to "Sign in with Google", "/auth/google_oauth2" %>
+  <%= link_to "Sign in with Google", "/auth/google_oauth2", class: "button login-btn" %>
 <% end %>
+
+<style>
+  .button {
+    display: inline-block;
+    padding: 10px 15px;
+    margin: 10px 5px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+  }
+  .inbox-btn {
+    background: #007bff;
+  }
+  .logout-btn {
+    background: #dc3545;
+  }
+  .login-btn {
+    background: #28a745;
+  }
+  .button:hover {
+    opacity: 0.8;
+  }
+</style>

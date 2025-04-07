@@ -18,9 +18,10 @@ gem "stimulus-rails"
 gem "jbuilder"
 gem "omniauth-google-oauth2"
 gem "omniauth-rails_csrf_protection"
-gem "google-apis-gmail_v1" # Google Gmail API
-gem "googleauth"           # OAuth authentication
+gem "google-apis-gmail_v1"
+gem "googleauth"
 gem "mail"
+
 gem "pry"
 
 

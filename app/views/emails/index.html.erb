@@ -1,10 +1,80 @@
-<h1>Your Emails</h1>
-
-<% @emails.each do |email| %>
-  <div class="email">
-    <h2><%= email.payload.headers.find { |h| h.name == "Subject" }&.value %></h2>
-    <p><strong>From:</strong> <%= email.payload.headers.find { |h| h.name == "From" }&.value %></p>
-    <p><strong>Snippet:</strong> <%= email.snippet %></p>
-    <hr>
-  </div>
-<% end %>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Gmail" %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <style>
+      .view-btn {
+        background: #007bff;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+      }
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.4);
+      }
+      .modal-content {
+        background-color: white;
+        margin: 10% auto;
+        padding: 20px;
+        border-radius: 10px;
+        width: 50%;
+      }
+      .close {
+        float: right;
+        font-size: 20px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Your Emails</h1>
+      <% @emails.each do |email| %>
+        <div class="email">
+          <h2><%= email.payload.headers.find { |h| h.name == "Subject" }&.value %></h2>
+          <p><strong>From:</strong> <%= email.payload.headers.find { |h| h.name == "From" }&.value %></p>
+          <p><strong>Snippet:</strong> <%= email.snippet %></p>
+          <button class="view-btn" onclick="openModal('<%= email.id %>')">View</button>
+        </div>
+      <% end %>
+    </div>
+    
+    <!-- Modal -->
+    <div id="emailModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2 id="emailSubject"></h2>
+        <p><strong>From:</strong> <span id="emailFrom"></span></p>
+        <p id="emailBody"></p>
+      </div>
+    </div>
+    
+    <script>
+      function openModal(emailId) {
+        fetch(`/emails/${emailId}`)
+          .then(response => response.json())
+          .then(data => {
+            document.getElementById("emailSubject").innerText = data.subject;
+            document.getElementById("emailFrom").innerText = data.from;
+            document.getElementById("emailBody").innerHTML = data.body;
+            document.getElementById("emailModal").style.display = "block";
+          });
+      }
+      function closeModal() {
+        document.getElementById("emailModal").style.display = "none";
+      }
+    </script>
+  </body>
+</html>

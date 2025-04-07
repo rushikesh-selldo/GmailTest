@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   delete "logout", to: "sessions#destroy"
   get "emails", to: "emails#index"
   post "/emails/webhook", to: "emails#webhook"
-  get "emails/new", to: "emails#new", as: :new_email
-  post "emails/send_email", to: "emails#send_email", as: :send_email
+  post "/send_email", to: "emails#send_email", as: :send_email
+  get "/send_email/new", to: "emails#new", as: :new_email
+  get "/emails/:id", to: "emails#show"
 end
